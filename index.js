@@ -16,12 +16,17 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.post("/", async (req, res) => {
+
+    const { messages } = req.body;
     
+    console.log(messages)
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [
-            {role: "user", content: "Hello World"},
+            {"role": "system", "content": "You are a counselor acting as a good friend of user."},
+            ...messages
+            //{role: "user", content: `${message}`},
         ]
     })
 
@@ -32,6 +37,5 @@ app.get("/", async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:3000`);
+    console.log(`Example app listening at http://localhost:${port}`);
 });
-    
